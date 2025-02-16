@@ -18,7 +18,7 @@
 
    - Sincronización de estados de habitaciones
 
-## ✨ Tecnologías Utilizadas
+## ⚒️ Tecnologías Utilizadas
 
  - Backend Autenticación: Java, Spring Boot, Spring Security, PostgreSQL
 
@@ -30,7 +30,18 @@
 
  - Docker: Para despliegue y gestión de servicios
 
-## ✨ Endpoints principales
+## ✅ Requisitos Previos
+
+Antes de ejecutar la aplicación, asegúrate de tener instalado:
+
+- **Node.js** (v18 o superior) → Para ejecutar el microservicio de reservas
+- **MongoDB** (v6 o superior) → Para la base de datos de reservas
+- **Java** (v17 o superior) → Para el microservicio de autenticación
+- **PostgreSQL** (v14 o superior) → Para la base de datos de autenticación
+- **Docker** (Opcional) → Para ejecutar los servicios en contenedores
+
+
+## 🚀 Endpoints principales
 
 ### **🔐 Autentificacion** (Spring Boot)
 
@@ -56,4 +67,22 @@
 | **GET**    | `/reservations/:id`  | Obtener detalles de una reserva         |
 | **PUT**    | `/reservations/:id`  | Modificar una reserva                   |
 | **DELETE** | `/reservations/:id`  | Cancelar una reserva                    |
+
+
+### 📌 **Diagrama de Arquitectura**  
+
+```mermaid
+graph TD;
+    User["🧑 Usuario"] -->|Solicita autenticación| AuthService["🔐 Auth Service (Spring Boot + PostgreSQL)"];
+    AuthService -->|Devuelve JWT| User;
+    
+    User -->|Realiza operaciones de reserva| RoomService["🏨 Room Service (NestJS + MongoDB)"];
+    
+    RoomService -->|Solicita validación de usuario| AuthService;
+    RoomService -->|Guarda información de reservas| MongoDB["🗄️ MongoDB"];
+    
+    AuthService -->|Guarda usuarios y credenciales| PostgreSQL["🗄️ PostgreSQL"];
+
+    Admin["🛠️ Administrador"] -->|Gestiona habitaciones y usuarios| RoomService;
+
 
